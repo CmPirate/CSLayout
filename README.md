@@ -8,5 +8,5 @@ allprojects {
   
   
   dependencies {
-	        implementation 'com.github.CmPirate:CSLayout:1.2'
+	        implementation 'com.github.CmPirate:CSLayout:1.3'
 	}
