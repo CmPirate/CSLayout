@@ -7,22 +7,22 @@ import android.view.View
 
 class CSHelper {
 
-    var mCircle = false             //是否圆形
-    var mCornerOverlay = false      //覆盖模式
+    var mCircle = false             // 是否圆形
+    var mCornerOverlay = false      // 覆盖模式
     var mCornerOverlayColor = Color.WHITE
-    var mCorner = 0f                //圆角
+    var mCorner = 0f                // 圆角
     var mCornerLeftTop = 0f
     var mCornerTopRight = 0f
     var mCornerRightBottom = 0f
     var mCornerBottomLeft = 0f
-    var mShadowSize = 0f            //阴影长度
-    var mShadowSizeLeft = 0f        //
+    var mShadowSize = 0f            // 阴影长度
+    var mShadowSizeLeft = 0f
     var mShadowSizeTop = 0f
     var mShadowSizeRight = 0f
     var mShadowSizeBottom = 0f
 
     private var shadowColorChanged = true
-    var mShadowColor: Int = 0x44000000            //阴影颜色
+    var mShadowColor: Int = 0x44000000// 阴影颜色
         set(value) {
             if (value == field)
                 return
@@ -39,10 +39,10 @@ class CSHelper {
     var mClipB = 0f
 
     val mPaint = Paint()
-    var radii = FloatArray(8)   // top-left, top-right, bottom-right, bottom-left
-    var mShadowBitmap: Bitmap? = null//阴影Bitmap
-    var mClipPath = Path()          //View区域
-    var mShadowPath = Path()        // 阴影区域
+    var radii = FloatArray(8)       // top-left, top-right, bottom-right, bottom-left
+    var mShadowBitmap: Bitmap? = null    // 阴影Bitmap
+    var mClipPath = Path()               // View区域
+    var mShadowPath = Path()             // 阴影区域
     var mRectClip = RectF()
     var mRectShadow = RectF()
     var mRect = RectF()
@@ -53,7 +53,6 @@ class CSHelper {
         mPaint.isAntiAlias = true
         mPaint.isDither = true
     }
-
 
     fun initAttr(view: View, ctx: Context?, arrts: AttributeSet?) {
         if (ctx == null || arrts == null)
@@ -69,7 +68,6 @@ class CSHelper {
                 mCornerTopRight = getDimensionPixelSize(R.styleable.CSAttrs_cs_corner_top_right, corner).toFloat()
                 mCornerRightBottom = getDimensionPixelSize(R.styleable.CSAttrs_cs_corner_bottom_right, corner).toFloat()
                 mCornerBottomLeft = getDimensionPixelSize(R.styleable.CSAttrs_cs_corner_bottom_left, corner).toFloat()
-
 
                 mCircle = getBoolean(R.styleable.CSAttrs_cs_circle, mCircle)
 
@@ -111,11 +109,8 @@ class CSHelper {
         }
         mPaint.color = Color.TRANSPARENT
         canvas?.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-//        mPaint.isFilterBitmap = true
-//        mPaint.setMaskFilter()
         mPaint.setShadowLayer(mRealShadowSize, 0f, 0f, mShadowColor)
         canvas?.drawPath(mShadowPath, mPaint)
-
     }
 
     fun onSizeChange(view: View, w: Int, h: Int) {
@@ -123,7 +118,6 @@ class CSHelper {
         mHeight = h
         computePath()
         createShader()
-
     }
 
     private fun computePath() {
@@ -170,11 +164,8 @@ class CSHelper {
         mClipPath.moveTo(mWidth + ageFix, mHeight + ageFix)
     }
 
-
     fun refresh() {
-//        val startTime = System.currentTimeMillis()
         computePath()
-//        Log.e("Time::", "compute:${System.currentTimeMillis() - startTime}")
         createShader()
     }
 
@@ -189,20 +180,18 @@ class CSHelper {
         }
         if (mCornerOverlay) return
         c.clipPath(mClipPath)
-
     }
-
 
     fun drawAfter(c: Canvas?, isEditMode: Boolean = false) {
         if (c == null) return
-        //如果覆盖模式并且不是预览 就绘制覆盖层
+        // 如果覆盖模式并且不是预览 就绘制覆盖层
         if (mCornerOverlay && !isEditMode) {
             mClipPath.fillType = Path.FillType.INVERSE_WINDING
             mPaint.color = mCornerOverlayColor
             mPaint.style = Paint.Style.FILL
             c.drawPath(mClipPath, mPaint)
         }
-        //减轻圆角的锯齿效果
+        // 减轻圆角的锯齿效果
         if (mCorner > 0) {
             mPaint.strokeWidth = 1f
             mPaint.style = Paint.Style.STROKE
@@ -212,11 +201,10 @@ class CSHelper {
             mPaint.xfermode = null
         }
         c.restore()
-        //阴影的绘制
+        // 阴影的绘制
         if (mRealShadowSize > 0 && !isEditMode) {
             c.save()
             mClipPath.fillType = Path.FillType.WINDING
-//            Log.e("drawShadow:", "" + mRealShadowSize)
             c.clipPath(mClipPath, Region.Op.DIFFERENCE)
             mPaint.color = Color.WHITE
             mPaint.style = Paint.Style.FILL
@@ -237,6 +225,5 @@ class CSHelper {
     fun onDetached() {
 //        mShadowBitmap?.recycle()
     }
-
 
 }

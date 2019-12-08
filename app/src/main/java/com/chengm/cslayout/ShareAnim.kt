@@ -67,6 +67,16 @@ inline fun createAnimator(isStart: Boolean, intent: Intent, key: String, v: View
     return anim
 }
 
+inline fun createAnimator(isStart: Boolean, intent: Intent, key: String, v: View): Animator {
+    val anim: Animator = when (v) {
+        is CSInterface -> CSViewAnim(isStart, v, intent.getParcelableExtra(key), CSKeyParm(key, v.rectInWindow(), CSParms()))
+        else -> ViewAnim(isStart, v, intent.getParcelableExtra(key), KeyParm(key, v.rectInWindow()))
+    }
+    anim.duration = 600
+    anim.interpolator = OffsetInterpolator()
+    return anim
+}
+
 inline fun View.rectInWindow(): Rect {
     val rect = Rect()
     val intArray = IntArray(2)

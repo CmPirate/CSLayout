@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.util.Property
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -44,7 +43,7 @@ class ScaleViewGesture(ctx: Context) : GestureDetector.SimpleOnGestureListener()
     var YD = 0f
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
-        Log.i("onTouch:", "action:${event.action}")
+//        Log.i("onTouch:", "action:${event.action}")
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 XD = event.x
@@ -115,13 +114,13 @@ class ScaleViewGesture(ctx: Context) : GestureDetector.SimpleOnGestureListener()
 
     private val animScale by lazy {
         val animator = ObjectAnimator.ofFloat(mView, propertyScale, 1f, scale)
-        animator.duration = 150
+        animator.duration = 120
         animator
     }
 
     private val animReview by lazy {
         val animator = ObjectAnimator.ofFloat(mView, propertyScale, scale, 1f)
-        animator.duration = 150
+        animator.duration = 120
         animator
     }
 
@@ -144,15 +143,6 @@ class ScaleViewGesture(ctx: Context) : GestureDetector.SimpleOnGestureListener()
     fun setCustomScale(scaleProperty: Property<View, Float>): ScaleViewGesture {
         propertyScale = scaleProperty
         return this
-    }
-
-    private fun recover() {
-        if (animScale.isRunning)
-            animScale.cancel()
-        mView.postDelayed({
-            mView.scaleX = 1.0f
-            mView.scaleY = 1.0f
-        }, 200)
     }
 
 }
